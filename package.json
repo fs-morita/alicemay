@@ -1,0 +1,22 @@
+{
+  "name": "alicemay",
+  "version": "1.0.0",
+  "description": "ミシン刺繍ハンドメイド AliceMay の紹介サイト。GitHub Pages 公開向けの静的サイトです。",
+  "private": true,
+  "scripts": {
+    "serve": "python3 -m http.server 8000",
+    "optimize": "node scripts/optimize.mjs",
+    "playwright:install": "playwright install chromium",
+    "playwright:install-deps": "playwright install-deps chromium",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.61.0",
+    "ffmpeg-static": "^5.2.0",
+    "sharp": "^0.34.5"
+  }
+}

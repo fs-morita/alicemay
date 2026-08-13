@@ -100,18 +100,28 @@
   </script>
 
   <!--
-    Google アナリティクスを使う場合は、GA4 で新しいプロパティを作成し、
-    測定ID（G- で始まる文字列）に差し替えてこのコメントを外してください。
-    ※ 他サイトの測定IDは使い回せません。
-
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
-  </script>
+    Google アナリティクス（GA4）
+    ここの測定IDを、このサイト用に発行した「G-」で始まるIDに差し替えてください。
+    取得手順は README の「Googleアナリティクス」の項に書いています。
+    他サイトの測定ID（soleon.jp や artshimoura.soleon.jp のもの）は使い回せません。
   -->
+  <script>
+    window.GA_MEASUREMENT_ID = 'G-XXXXXXXXXX';
+
+    // 差し替え前に読み込むと存在しないIDへ計測を送ってしまうため、
+    // プレースホルダのままのときは何もしない。
+    if (window.GA_MEASUREMENT_ID && !window.GA_MEASUREMENT_ID.includes('XXXX')) {
+      const tag = document.createElement('script');
+      tag.async = true;
+      tag.src = 'https://www.googletagmanager.com/gtag/js?id=' + window.GA_MEASUREMENT_ID;
+      document.head.appendChild(tag);
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', window.GA_MEASUREMENT_ID);
+    }
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#main">本文へ移動</a>

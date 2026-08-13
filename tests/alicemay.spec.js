@@ -100,6 +100,37 @@ test('モバイルでナビが開閉する', async ({ page }, testInfo) => {
   await expect(nav).not.toHaveClass(/is-open/)
 })
 
+test('sitemap.xml と robots.txt が配信されている', async ({ request }) => {
+  const sitemap = await request.get('/sitemap.xml')
+  expect(sitemap.ok()).toBe(true)
+  const xml = await sitemap.text()
+  expect(xml).toContain('<loc>https://alicemay.soleon.jp/</loc>')
+
+  const robots = await request.get('/robots.txt')
+  expect(robots.ok()).toBe(true)
+  expect(await robots.text()).toContain('Sitemap: https://alicemay.soleon.jp/sitemap.xml')
+})
+
+test('計測IDが未設定のあいだは GA を読み込まない', async ({ page }) => {
+  const gaRequests = []
+  page.on('request', (r) => {
+    if (r.url().includes('googletagmanager.com')) gaRequests.push(r.url())
+  })
+
+  await page.goto('/')
+  await page.waitForTimeout(800)
+
+  const id = await page.evaluate(() => window.GA_MEASUREMENT_ID)
+  expect(id, 'GA_MEASUREMENT_ID が index.html に無い').toBeTruthy()
+
+  if (id.includes('XXXX')) {
+    expect(gaRequests, 'プレースホルダのまま GA へ送信している').toEqual([])
+  } else {
+    expect(id).toMatch(/^G-[A-Z0-9]+$/)
+    expect(gaRequests.join(' '), '測定IDを設定したのに gtag が読み込まれていない').toContain(id)
+  }
+})
+
 test('FAQ のアコーディオンが開く', async ({ page }) => {
   await page.goto('/')
   const first = page.locator('.faq-item').first()

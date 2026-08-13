@@ -34,7 +34,9 @@
 
   /* 文字組み */
   --sans: "Zen Kaku Gothic New", -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
-  --display: "Bodoni Moda", "Times New Roman", serif;
+  /* Bodoni Moda に和文グリフは無い。「無料」「点」などが豆腐にならないよう
+     和文フォントを必ず後ろに置く。 */
+  --display: "Bodoni Moda", "Times New Roman", "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", serif;
 
   --gutter: 20px;
   --section-y: 72px;
@@ -247,6 +249,11 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
   font-size: clamp(22px, 5vw, 30px); letter-spacing: .04em; margin-bottom: 16px;
 }
 .section-lead { color: var(--ink-soft); font-size: 14.5px; }
+.section-note {
+  margin-top: 14px; padding-left: 14px;
+  border-left: 1px dashed var(--thread);
+  color: var(--ink-faint); font-size: 12.5px; line-height: 1.8;
+}
 
 
 /* ==========================================================================
@@ -321,7 +328,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 
 @media (min-width: 900px) {
   .hero { padding-block: 64px 96px; }
-  .hero-inner { grid-template-columns: 1fr 1.05fr; align-items: center; gap: 56px; }
+  .hero-inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: center; gap: 56px; }
 }
 
 
@@ -347,7 +354,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .about-figure img { width: 100%; }
 
 @media (min-width: 900px) {
-  .about-grid { grid-template-columns: 1fr 1fr; align-items: center; gap: 56px; }
+  .about-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 56px; }
 }
 
 
@@ -368,11 +375,13 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
   font-size: 11.5px; font-weight: 400; letter-spacing: .1em; color: var(--ink-faint);
 }
 
+/* minmax(0, 1fr) にしないと、トラックの最小幅が中身の min-content になり、
+   折り返せない日本語の作品名のぶんだけ列が広がって横スクロールが出る。 */
 .works-grid {
   display: grid; gap: 16px;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
-@media (min-width: 700px) { .works-grid { grid-template-columns: repeat(3, 1fr); gap: 22px; } }
+@media (min-width: 700px) { .works-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; } }
 
 .work-card a {
   display: block; height: 100%;
@@ -393,12 +402,20 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .work-name {
   display: block; font-size: 13.5px; font-weight: 500; line-height: 1.6;
   margin-bottom: 8px;
+  /* auto-phrase で切れない長い語も、カード幅を超えるくらいなら途中で折る */
+  overflow-wrap: anywhere;
 }
-.work-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+/* 狭い画面ではタグと価格を横に並べる余裕がないので縦に積む。
+   3列になる幅からは同じ行に戻す。 */
+.work-meta { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
 .work-tag {
   font-size: 10.5px; letter-spacing: .04em; color: var(--ink-soft);
   background: var(--rose-soft); border-radius: 999px; padding: 3px 9px;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 62%;
+  line-height: 1.6; max-width: 100%;
+}
+@media (min-width: 700px) {
+  .work-meta { flex-direction: row; align-items: center; justify-content: space-between; gap: 8px; }
+  .work-tag { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 }
 .work-price { font-family: var(--display); font-size: 15px; color: var(--navy); white-space: nowrap; }
 
@@ -430,7 +447,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .feature-card p { color: var(--ink-soft); font-size: 14px; }
 
 @media (min-width: 760px) {
-  .feature-list { grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .feature-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
   .feature-card figure { aspect-ratio: 4 / 3; }
 }
 
@@ -458,7 +475,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .flow-step h3 { font-size: 16px; letter-spacing: .03em; margin-bottom: 8px; }
 .flow-step p { color: var(--ink-soft); font-size: 14px; }
 
-@media (min-width: 760px) { .flow-list { grid-template-columns: repeat(3, 1fr); gap: 22px; } }
+@media (min-width: 760px) { .flow-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; } }
 
 .flow-note {
   margin-top: 28px; padding: 26px 24px;
@@ -566,7 +583,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 }
 
 @media (min-width: 760px) {
-  .footer-inner { grid-template-columns: 1.4fr 1fr 1fr; gap: 40px; }
+  .footer-inner { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr); gap: 40px; }
 }
 
 

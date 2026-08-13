@@ -1,12 +1,33 @@
 // @ts-check
 import { expect, test } from '@playwright/test'
 
-// data-reveal のフェードインを待ってから撮影・検証するための待機
+// data-reveal のフェードインと遅延読み込み画像を片付けてから撮影・検証する
 async function settle(page) {
-  await page.evaluate(() => {
+  await page.evaluate(async () => {
     document.querySelectorAll('[data-reveal]').forEach((el) => el.classList.add('is-visible'))
+
+    // 画面外の画像は lazy のままだと読み込まれず fullPage 撮影に写らない。
+    // 属性を外したうえで一度スクロールして通過させる。
+    document.querySelectorAll('img[loading="lazy"]').forEach((img) => img.removeAttribute('loading'))
+
+    const step = window.innerHeight
+    for (let y = 0; y < document.body.scrollHeight; y += step) {
+      window.scrollTo(0, y)
+      await new Promise((r) => setTimeout(r, 80))
+    }
+    window.scrollTo(0, 0)
+
+    // ローカルサーバーが詰まると待ちっぱなしになるので上限を切る
+    const allLoaded = () => [...document.images].every((img) => img.complete && img.naturalWidth > 0)
+    const deadline = Date.now() + 15000
+    while (!allLoaded() && Date.now() < deadline) {
+      await new Promise((r) => setTimeout(r, 200))
+    }
   })
-  await page.waitForTimeout(400)
+
+  // 読み込み済みでも描画が追いつかないことがあるので2フレーム待つ
+  await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))))
+  await page.waitForTimeout(600)
 }
 
 test('トップページが表示され、主要セクションが揃っている', async ({ page }) => {
@@ -27,6 +48,27 @@ test('全ページのスクリーンショットを撮る', async ({ page }, tes
     path: `screenshots/${testInfo.project.name}-full.png`,
     fullPage: true,
   })
+})
+
+test('横スクロールが発生しない', async ({ page }) => {
+  await page.goto('/')
+  await settle(page)
+
+  const { clientWidth, scrollWidth, offenders } = await page.evaluate(() => {
+    const w = document.documentElement.clientWidth
+    const offenders = []
+    for (const el of document.querySelectorAll('*')) {
+      const r = el.getBoundingClientRect()
+      if (r.width === 0 && r.height === 0) continue
+      if (r.right > w + 1 || r.left < -1) {
+        offenders.push(`<${el.tagName.toLowerCase()} class="${el.className}"> right=${Math.round(r.right)}`)
+      }
+    }
+    return { clientWidth: w, scrollWidth: document.documentElement.scrollWidth, offenders }
+  })
+
+  expect(scrollWidth, `はみ出している要素:\n${offenders.slice(0, 10).join('\n')}`)
+    .toBeLessThanOrEqual(clientWidth + 1)
 })
 
 test('ヒーローの動画が再生される', async ({ page }) => {

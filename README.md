@@ -148,41 +148,19 @@ sudo npx playwright install-deps chromium   # パスワードを聞かれます
 
 ## Googleアナリティクス
 
-タグは `index.html` の `<head>` に入っています。**測定IDだけがまだ未設定**です。
+設定済みです。タグは `index.html` の `<head>` にあります。
 
-```html
-window.GA_MEASUREMENT_ID = 'G-XXXXXXXXXX';   ← ここを差し替える
-```
-
-`G-XXXX...` のままのあいだはタグが読み込まれない作りなので、
-差し替えるまで計測は動きません（誤ったIDへ送信されることもありません）。
-
-### 測定IDの取り方
-
-soleon.jp や artshimoura.soleon.jp と**同じGoogleアカウント**で、
-このサイト用のプロパティを新しく作ります。サイトごとにIDは別物です。
-
-| サイト | 測定ID |
+| 項目 | 値 |
 |---|---|
-| soleon.jp | `G-055V7YHC94` |
-| artshimoura.soleon.jp | `G-SS5Q0YDYKC` |
-| forday-and.com | `G-PE69D39S65` |
-| **alicemay.soleon.jp** | **これから発行する** |
+| 測定ID | `G-JDY0FRV6TP` |
+| ストリームID | `15432247076` |
 
-1. https://analytics.google.com/ を開く（soleon.jp を管理しているアカウントでログイン）
-2. 左下の歯車 **管理** → **プロパティを作成**
-3. プロパティ名を `AliceMay`、タイムゾーンと通貨を **日本／日本円** にして次へ
-4. 業種とビジネスの規模を選んで作成（内容は計測に影響しません）
-5. データストリームの選択で **ウェブ** を選ぶ
-6. ウェブサイトのURLに `https://alicemay.soleon.jp`、ストリーム名に `AliceMay` を入れて **ストリームを作成**
-7. 作成後の画面に出る **測定ID**（`G-` で始まる10桁前後の文字列）をコピー
+このサイト専用のIDです。他サイト（soleon.jp は `G-055V7YHC94`、
+artshimoura.soleon.jp は `G-SS5Q0YDYKC`、forday-and.com は `G-PE69D39S65`）とは別物なので、
+取り違えないよう注意してください。
 
-> 新しいプロパティを作らず、既存プロパティに**データストリームだけ追加**しても構いません。
-> その場合は 管理 → データストリーム → ストリームを追加 → ウェブ、で 6〜7 と同じです。
-> ただし soleon.jp と同じプロパティに入れると両サイトの数値が混ざるため、
-> 分けて見たいなら新規プロパティをおすすめします。
-
-コピーした測定IDを `index.html` の `GA_MEASUREMENT_ID` に貼って push すれば計測が始まります。
+数値は https://analytics.google.com/ の「AliceMay」プロパティで見られます。
+反映まで最大24時間ほどかかりますが、**レポート → リアルタイム** なら数分で確認できます。
 
 ### Search Console にサイトマップを登録する
 

@@ -111,7 +111,10 @@ test('sitemap.xml と robots.txt が配信されている', async ({ request }) 
   expect(await robots.text()).toContain('Sitemap: https://alicemay.soleon.jp/sitemap.xml')
 })
 
-test('計測IDが未設定のあいだは GA を読み込まない', async ({ page }) => {
+// 測定IDの設定状態と gtag の読み込みが食い違っていないかを見る。
+// ID を入れ忘れたまま「入れたつもり」になる事故と、
+// プレースホルダのまま存在しない ID へ送信する事故の両方を防ぐ。
+test('GA の測定IDと gtag の読み込みが一致している', async ({ page }) => {
   const gaRequests = []
   page.on('request', (r) => {
     if (r.url().includes('googletagmanager.com')) gaRequests.push(r.url())

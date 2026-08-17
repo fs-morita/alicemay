@@ -379,7 +379,16 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round
 
 .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 
-.hero-facts { display: flex; flex-wrap: wrap; margin: 44px 0 0; padding-top: 26px; position: relative; }
+/* 中身は件数ではなく和文の短い語。数字を大きく見せる作りにすると
+   「撥水・ヌビ・リバティ」のような値が狭い画面で溢れるので、
+   3項目が同じ大きさで並ぶ仕様表として組む。
+   --fact-gap は項目の間隔。区切り線の位置もこの値から引いているので、
+   間隔を変えるときはここだけ直せば両方が追従する。 */
+.hero-facts {
+  --fact-gap: 20px;
+  display: flex; flex-wrap: wrap; row-gap: 16px;
+  margin: 44px 0 0; padding-top: 26px; position: relative;
+}
 .hero-facts::before {
   content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px;
   background-image: repeating-linear-gradient(
@@ -387,20 +396,35 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round
     transparent var(--stitch-dash) calc(var(--stitch-dash) + var(--stitch-gap))
   );
 }
-.hero-facts > div { padding-right: 28px; margin-right: 28px; position: relative; }
-.hero-facts > div + div::before {
-  content: ""; position: absolute; left: -28px; top: 8px; bottom: 8px; width: 1px;
-  background: var(--rule);
+.hero-facts > div {
+  padding-right: var(--fact-gap); margin-right: var(--fact-gap);
+  position: relative;
+  /* min-width の既定値 auto は、中身の最小幅より縮むことを禁じる。
+     「撥水・ヌビ・リバティ」のような長い値がはみ出す原因になるので外す。 */
+  min-width: 0;
 }
 .hero-facts > div:last-child { padding-right: 0; margin-right: 0; }
+
+/* 区切りの縦線は、3項目が1行に収まるときだけ引く。折り返した行の先頭にも
+   線が付くと、何も区切っていない線が宙に浮いて見えるため。
+   判定は画面幅ではなくコピー段の実幅で行う（.hero-copy が container）。
+   画面幅で切ると、2段組に変わる 960〜1280px あたりで段だけが狭くなり、
+   「線は出ているのに折り返している」状態になる。3項目の実測は約424pxなので
+   440px を境にしている。 */
+@container (min-width: 440px) {
+  .hero-facts { --fact-gap: 28px; }
+  .hero-facts > div + div::before {
+    content: ""; position: absolute; left: calc(var(--fact-gap) * -1); top: 4px; bottom: 4px; width: 1px;
+    background: var(--rule);
+  }
+}
 .hero-facts dt { font-size: 10.5px; letter-spacing: .14em; color: var(--ink-faint); }
 .hero-facts dd {
-  margin: 4px 0 0;
-  font-family: var(--latin); font-weight: 700;
-  font-size: 32px; line-height: 1.1; color: var(--ink);
-  font-variant-numeric: tabular-nums;
+  margin: 5px 0 0;
+  font-weight: 700;
+  font-size: clamp(15px, 2.2vw, 18px); line-height: 1.5; color: var(--ink);
 }
-.hero-facts dd small { font-family: var(--sans); font-weight: 400; font-size: 11.5px; margin-left: 4px; color: var(--ink-soft); }
+.hero-facts dd small { font-weight: 400; font-size: 11.5px; margin-left: 3px; color: var(--ink-soft); }
 
 .hero-visual { position: relative; }
 
@@ -480,10 +504,6 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round
   background: var(--paper); border-radius: var(--radius);
   font-size: 13.5px;
   box-shadow: var(--shadow);
-}
-.about-note strong {
-  font-family: var(--latin); font-weight: 700; font-size: 19px;
-  color: var(--accent); padding: 0 3px;
 }
 
 .about-figure {

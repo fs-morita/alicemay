@@ -105,41 +105,6 @@
     revealTargets.forEach((el) => observer.observe(el));
   }
 
-  /* ------------------------------------------------------ 実績のカウント */
-  // 「71点」「41件」の数字を 0 から数え上げる。単位の <small> はそのまま残す。
-
-  const counters = Array.from(document.querySelectorAll('.hero-facts dd'))
-    .map((dd) => {
-      const node = [...dd.childNodes].find((n) => n.nodeType === 3 && /\d/.test(n.nodeValue));
-      return node ? { node, to: parseInt(node.nodeValue, 10) } : null;
-    })
-    .filter(Boolean);
-
-  if (counters.length && !reduceMotion && 'IntersectionObserver' in window) {
-    counters.forEach((c) => { c.node.nodeValue = '0'; });
-
-    const run = () => {
-      const duration = 1100;
-      const started = performance.now();
-      const tick = (now) => {
-        // 終盤をゆるめる（easeOutCubic）と、数字が「止まる」感じが出る
-        const t = Math.min((now - started) / duration, 1);
-        const eased = 1 - Math.pow(1 - t, 3);
-        counters.forEach((c) => { c.node.nodeValue = String(Math.round(c.to * eased)); });
-        if (t < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    };
-
-    const facts = document.querySelector('.hero-facts');
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) { run(); io.disconnect(); }
-      });
-    }, { threshold: 0.4 });
-    io.observe(facts);
-  }
-
   /* ------------------------------------------------------ ヒーローの動画 */
   // ポスター画像を先に出し、動画は画面に入ってから読み込む。
   // 2本を一定間隔でクロスフェードさせる。1本しか無い場合はそのままループする。

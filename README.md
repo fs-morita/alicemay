@@ -155,6 +155,24 @@ npx playwright install chromium
 sudo npx playwright install-deps chromium   # パスワードを聞かれます
 ```
 
+### sudo が使えないとき
+
+`libnspr4.so` が無いというエラーでブラウザが起動しない場合、
+足りないのは `libnspr4` / `libnss3` / `libasound2` の3つだけです。
+root 権限なしでも、ユーザー領域に展開して読ませれば動きます。
+
+```bash
+mkdir -p ~/.local/pw-deps && cd ~/.local/pw-deps
+apt-get download libnspr4 libnss3 libasound2
+for f in *.deb; do dpkg-deb -x "$f" root; done
+```
+
+以後、テストはこう実行します。
+
+```bash
+LD_LIBRARY_PATH=~/.local/pw-deps/root/usr/lib/x86_64-linux-gnu npm test
+```
+
 ---
 
 ## 公開の設定（初回のみ）

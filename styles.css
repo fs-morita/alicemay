@@ -545,10 +545,22 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round
   background-image: repeating-linear-gradient(to right, var(--accent) 0 4px, transparent 4px 8px);
 }
 
-.statement { margin: 0; max-width: 20em; }
+/* 1行が26文字ある。段が狭いまま字を大きくすると4行に折れ、
+   右のチップ（2段）と高さが釣り合わず下半分が空く。
+   段を広げたうえで字を落として、3行に収める。 */
+/* 文字サイズは p ではなく親に置く。max-width の em は指定した要素自身の
+   font-size で解決されるため、p 側に置くと 28em が本文16px基準の448pxになり、
+   狙った幅にならない。 */
+.statement {
+  margin: 0;
+  font-size: clamp(18px, 2.4vw, 22px);
+  max-width: 28em;
+}
+/* 1行が26文字ある。段が狭いまま字を大きくすると4行に折れ、
+   右のチップ（2段）と高さが釣り合わず下半分が空く。 */
 .statement p {
-  font-size: clamp(19px, 3.2vw, 28px); font-weight: 500;
-  line-height: 1.85; letter-spacing: .01em;
+  font-size: inherit; font-weight: 500;
+  line-height: 1.9; letter-spacing: .01em;
   color: var(--ink-soft);
 }
 .statement-strong { color: var(--ink) !important; font-weight: 700 !important; }
@@ -566,7 +578,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round
 
 @media (min-width: 960px) {
   .section-statement .container {
-    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
     column-gap: 80px; align-items: start;
   }
   .statement-kicker { grid-column: 1; grid-row: 1; }

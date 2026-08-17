@@ -35,7 +35,8 @@ test('トップページが表示され、主要セクションが揃ってい�
 
   await expect(page).toHaveTitle(/AliceMay/)
   // h1 はキャッチコピー。屋号は署名の位置に置いているので、両方あることを見る。
-  await expect(page.locator('h1')).toHaveText(/。$/)
+  // h1 の末尾には装飾用の空 span（縫い目）が入るため、末尾一致では拾えない。
+  await expect(page.locator('h1')).toContainText('そのまま形に。')
   await expect(page.locator('.hero-signature-mark')).toHaveText('AliceMay')
 
   for (const id of ['about', 'works', 'features', 'flow', 'instagram', 'faq']) {
@@ -75,6 +76,10 @@ test('横スクロールが発生しない', async ({ page }) => {
 
 test('ヒーローの動画が再生される', async ({ page }) => {
   await page.goto('/')
+
+  // 動画は画面に入ってから読み込む作りなので、まず映像を視界に入れる。
+  // スマホ幅ではヒーローが縦積みになり、初回表示では映像が画面の下にある。
+  await page.locator('.hero-media').scrollIntoViewIfNeeded()
 
   const active = page.locator('.hero-media video.is-active')
   await expect(active).toHaveCount(1, { timeout: 10_000 })

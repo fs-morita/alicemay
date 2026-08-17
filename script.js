@@ -53,9 +53,43 @@
     desktop.addEventListener('change', (e) => { if (e.matches) setNav(false); });
   }
 
+  /* ------------------------------------------------ 現在地に合わせたナビ */
+  // デスクトップのナビで、いま見えているセクションのリンクに印をつける。
+
+  const navLinks = Array.from(document.querySelectorAll('[data-nav] a[href^="#"]'));
+
+  if (navLinks.length && 'IntersectionObserver' in window) {
+    const linkFor = new Map();
+    navLinks.forEach((a) => {
+      const section = document.querySelector(a.getAttribute('href'));
+      if (section) linkFor.set(section, a);
+    });
+
+    // 一番上に来ているセクションを選ぶ。複数が同時に見えていても印はひとつ。
+    const visible = new Set();
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) visible.add(entry.target);
+        else visible.delete(entry.target);
+      });
+
+      const current = [...linkFor.keys()].find((s) => visible.has(s));
+      navLinks.forEach((a) => a.classList.toggle('is-current', a === linkFor.get(current)));
+    }, { rootMargin: '-45% 0px -45% 0px' });
+
+    linkFor.forEach((_, section) => spy.observe(section));
+  }
+
   /* -------------------------------------------------------- スクロール表示 */
 
   const revealTargets = document.querySelectorAll('[data-reveal]');
+
+  // 隣り合う要素は少しずつ遅れて現れる。並び順は親の中での位置から取る。
+  revealTargets.forEach((el) => {
+    const siblings = Array.from(el.parentElement?.children ?? []).filter((n) => n.hasAttribute?.('data-reveal'));
+    const i = siblings.indexOf(el);
+    if (i > 0) el.style.setProperty('--reveal-i', String(Math.min(i, 5)));
+  });
 
   if (reduceMotion || !('IntersectionObserver' in window)) {
     revealTargets.forEach((el) => el.classList.add('is-visible'));
@@ -69,6 +103,41 @@
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
 
     revealTargets.forEach((el) => observer.observe(el));
+  }
+
+  /* ------------------------------------------------------ 実績のカウント */
+  // 「71点」「41件」の数字を 0 から数え上げる。単位の <small> はそのまま残す。
+
+  const counters = Array.from(document.querySelectorAll('.hero-facts dd'))
+    .map((dd) => {
+      const node = [...dd.childNodes].find((n) => n.nodeType === 3 && /\d/.test(n.nodeValue));
+      return node ? { node, to: parseInt(node.nodeValue, 10) } : null;
+    })
+    .filter(Boolean);
+
+  if (counters.length && !reduceMotion && 'IntersectionObserver' in window) {
+    counters.forEach((c) => { c.node.nodeValue = '0'; });
+
+    const run = () => {
+      const duration = 1100;
+      const started = performance.now();
+      const tick = (now) => {
+        // 終盤をゆるめる（easeOutCubic）と、数字が「止まる」感じが出る
+        const t = Math.min((now - started) / duration, 1);
+        const eased = 1 - Math.pow(1 - t, 3);
+        counters.forEach((c) => { c.node.nodeValue = String(Math.round(c.to * eased)); });
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+
+    const facts = document.querySelector('.hero-facts');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) { run(); io.disconnect(); }
+      });
+    }, { threshold: 0.4 });
+    io.observe(facts);
   }
 
   /* ------------------------------------------------------ ヒーローの動画 */

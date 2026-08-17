@@ -43,6 +43,29 @@ npm run serve
 `index.html` を開いて、該当箇所の日本語を書き換えるだけです。
 `<` `>` で囲まれた部分（タグ）は消さないように気をつけてください。
 
+### キャッチコピーを差し替える
+
+トップの大きな一文は `index.html` の `<h1 class="hero-title">` です。
+その上の英字（`hero-eyebrow`）とセットで意味が通るように直してください。
+
+```html
+<p class="hero-eyebrow">Tell us how you want it</p>
+<h1 class="hero-title" id="hero-title">
+  <span class="hero-title-line">「こうしたい」を、</span><span class="hero-title-line">そのまま形に。</span>
+```
+
+`hero-title-line` は1行ぶんです。2行に割りたいところで区切ります。
+すぐ下のHTMLコメントに、採用しなかった候補を残してあります。
+
+コピーを変えたら、`<meta property="og:description">`（SNSに出る説明文）も
+合わせて見直すとちぐはぐになりません。
+
+### 紺色の帯（オーダーの案内）を直す
+
+Aboutと作品一覧のあいだにある紺色のセクションです。
+`index.html` の `<section class="section-statement">` の中にあります。
+右側に並んでいる「サイズ変更」「生地の指定」などは `<li>` を足し引きするだけで増減できます。
+
 ### 作品を差し替える・追加する
 
 作品カードは `index.html` の `<!-- ==================== WORKS ====== -->` 以下にあります。
@@ -85,6 +108,10 @@ npm run serve
 
 動画は1本だけでも動きます。その場合は `index.html` の `data-hero-video` の
 `<video>` タグを1つ消してください。
+
+**AIで動画を作るときの注意**：針が布に刺さる瞬間を正面から映させると、
+糸と布の絡み方がほぼ必ず不自然になります（初代の動画がこれで作り直しました）。
+針を画角の外に出す・カメラだけ動かす・光だけを動かす、のいずれかにすると破綻しません。
 
 ### Instagramの投稿を並べたい
 

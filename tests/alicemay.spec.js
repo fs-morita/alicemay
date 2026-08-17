@@ -34,7 +34,9 @@ test('トップページが表示され、主要セクションが揃ってい�
   await page.goto('/')
 
   await expect(page).toHaveTitle(/AliceMay/)
-  await expect(page.locator('h1')).toHaveText('AliceMay')
+  // h1 はキャッチコピー。屋号は署名の位置に置いているので、両方あることを見る。
+  await expect(page.locator('h1')).toHaveText(/。$/)
+  await expect(page.locator('.hero-signature-mark')).toHaveText('AliceMay')
 
   for (const id of ['about', 'works', 'features', 'flow', 'instagram', 'faq']) {
     await expect(page.locator(`#${id}`)).toBeAttached()

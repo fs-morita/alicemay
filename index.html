@@ -6,13 +6,13 @@
   <title>AliceMay｜大阪のミシン刺繍ハンドメイド・入園入学グッズ</title>
   <meta name="description" content="大阪のミシン刺繍ハンドメイド『AliceMay』。レッスンバッグ・上履き袋・体操服袋など入園入学グッズを、名入れ刺繍を入れて一点ずつお作りしています。サイズ変更やスポーツ刺繍のオーダーにも対応。">
   <meta name="format-detection" content="telephone=no">
-  <meta name="theme-color" content="#faf8f5">
+  <meta name="theme-color" content="#ffffff">
   <link rel="canonical" href="https://alicemay.soleon.jp/">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="AliceMay">
   <meta property="og:title" content="AliceMay｜大阪のミシン刺繍ハンドメイド・入園入学グッズ">
-  <meta property="og:description" content="レッスンバッグ・上履き袋・体操服袋など入園入学グッズを、名入れ刺繍を入れて一点ずつお作りしています。">
+  <meta property="og:description" content="「こうしたい」を、そのまま形に。園の指定サイズも、好きな柄も、名前の刺繍も。大阪のミシン刺繍ハンドメイド AliceMay。">
   <meta property="og:url" content="https://alicemay.soleon.jp/">
   <meta property="og:image" content="https://alicemay.soleon.jp/assets/images/og.jpg">
   <meta property="og:locale" content="ja_JP">
@@ -26,7 +26,7 @@
   <link rel="preload" href="./assets/images/hero-poster.webp" as="image" fetchpriority="high">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css">
 
   <script type="application/ld+json">
@@ -155,11 +155,27 @@
     <section class="hero" id="top" aria-labelledby="hero-title">
       <div class="hero-inner">
         <div class="hero-copy" data-reveal>
-          <p class="hero-kicker">大阪のミシン刺繍ハンドメイド</p>
-          <h1 class="hero-title" id="hero-title">AliceMay</h1>
+          <!--
+            キャッチコピー。差し替えるときは h1 の中身と hero-eyebrow だけを直せば済む。
+            ほかの候補：
+              「こうしたい」を、そのまま縫う。（「形に」を、このブランドの動詞に替えたもの）
+              園から渡された、あの寸法どおりに。（指定サイズという困りごとを主役に）
+              無かったので、作れるようにしました。（起点のストーリー）
+              手縫いでは、ありません。（ミシン刺繍という技法の主張）
+          -->
+          <p class="hero-eyebrow">Tell us how you want it</p>
+          <h1 class="hero-title" id="hero-title" data-hang>
+            <span class="hero-title-line">「こうしたい」を、</span><span class="hero-title-line">そのまま形に。</span>
+            <span class="hero-title-stitch" aria-hidden="true"></span>
+          </h1>
+          <p class="hero-signature">
+            <span class="hero-signature-mark">AliceMay</span>
+            <span class="hero-signature-sub">大阪のミシン刺繍ハンドメイド</span>
+          </p>
           <p class="hero-lead">
-            入園入学グッズを中心に、名入れ刺繍を入れたバッグや巾着を一点ずつお作りしています。
-            サイズ変更やスポーツ刺繍のご相談も承ります。
+            園の指定サイズも、好きな柄も、名前の書体も。
+            入園入学グッズからスポーツ刺繍まで、ご相談いただければできる限り形にします。
+            名入れ刺繍は無料です。
           </p>
           <div class="hero-actions">
             <a class="button button-primary" href="https://www.creema.jp/c/AliceMay/item/onsale" target="_blank" rel="noopener">
@@ -174,13 +190,17 @@
           <dl class="hero-facts">
             <div><dt>販売実績</dt><dd>71<small>点</small></dd></div>
             <div><dt>レビュー</dt><dd>41<small>件</small></dd></div>
-            <div><dt>名入れ刺繍</dt><dd>無料</dd></div>
+            <div><dt>選べる刺繍</dt><dd>8<small>種</small></dd></div>
           </dl>
         </div>
 
         <div class="hero-visual" data-reveal>
+          <p class="hero-badge">
+            <span>名入れ刺繍</span>
+            <strong>無料</strong>
+          </p>
           <div class="hero-media" data-hero-media>
-            <img class="hero-poster" src="./assets/images/hero-poster.webp" width="960" height="720" alt="ミシンで刺繍を縫っているところ" fetchpriority="high" decoding="async" data-hero-poster>
+            <img class="hero-poster" src="./assets/images/hero-poster.webp" width="960" height="720" alt="ミシンの押さえ金の下を布が流れ、縫い目が伸びていくところ" fetchpriority="high" decoding="async" data-hero-poster>
             <video muted loop playsinline preload="none" width="960" height="720" data-hero-video data-src="./video/hero-01.mp4"></video>
             <video muted loop playsinline preload="none" width="960" height="720" data-hero-video data-src="./video/hero-02.mp4"></video>
           </div>
@@ -194,14 +214,19 @@
         <div class="about-copy" data-reveal>
           <p class="section-kicker">About</p>
           <h2 class="section-title" id="about-title">AliceMayについて</h2>
-          <p>
-            AliceMayは、大阪でミシン刺繍のハンドメイド作品をお作りしている小さな工房です。
-            レッスンバッグ、上履き袋、体操服袋、給食セット——
-            入園・入学の準備でそろえるものを、名前の刺繍を入れて一点ずつ縫っています。
+          <p class="about-first">
+            はじまりは、息子のレッスンバッグでした。
+            好きなスポーツの柄で作ってあげたかったのに、生地がどこにも売っていない。
+            それなら自分で縫おう——そう思って手を動かしたのが、AliceMayの出発点です。
           </p>
           <p>
-            同じ柄でもお子さまによって必要なサイズは違います。
-            園や学校の指定サイズに合わせた変更や、好きなスポーツのワンポイント刺繍など、
+            ミシン刺繍には、プリントでは出せない立体感と、光沢のある糸ならではの鮮やかさがあります。
+            その美しさに惹かれて、レッスンバッグ、上履き袋、体操服袋、給食セット——
+            入園・入学でそろえるものを、名前の刺繍を添えて一点ずつ縫っています。
+          </p>
+          <p>
+            三人の子どもを育てながら作っているので、使う側の「こうだったらいいのに」はよく分かります。
+            園や学校の指定サイズへの変更も、好きなスポーツのワンポイント刺繍も、
             ご相談いただければできる限り形にします。
           </p>
           <p class="about-note">
@@ -212,6 +237,30 @@
         <figure class="about-figure" data-reveal>
           <img src="./assets/images/about.webp" width="1200" height="884" alt="窓辺に置かれたミシンと、たたんだ布地・糸巻き" loading="lazy" decoding="async">
         </figure>
+      </div>
+    </section>
+
+    <!-- ==================== 受注のバンド ====================
+         クリームの面が延々と続くとリズムが単調になるので、ここで紺に反転させる。
+         キャッチコピー「こうしたい」を受け止める役割も兼ねている。 -->
+    <section class="section-statement" aria-label="オーダーについて">
+      <div class="container">
+        <p class="statement-kicker">Made to order</p>
+        <div class="statement" data-reveal>
+          <p>
+            園の指定サイズに合わせる。手提げをリュック型に変える。<br>
+            この刺繍を、別の色で。
+          </p>
+          <p class="statement-strong">「こうしたい」があれば、まずお聞かせください。</p>
+        </div>
+        <ul class="statement-list" data-reveal>
+          <li>サイズ変更</li>
+          <li>生地の指定</li>
+          <li>刺繍を8種から選択</li>
+          <li>書体の指定</li>
+          <li>リュック型への変更</li>
+          <li>名入れ刺繍は無料</li>
+        </ul>
       </div>
     </section>
 
@@ -235,7 +284,8 @@
         <div class="works-group" data-reveal>
           <h3 class="works-group-title">入園入学セット<span>まとめてそろえる</span></h3>
           <ul class="works-grid">
-            <li class="work-card">
+            <!-- 1枚目だけ大きく扱う。全部同じ大きさのグリッドは平坦に見えるため。 -->
+            <li class="work-card work-card-lead">
               <a href="https://www.creema.jp/item/20121960/detail" target="_blank" rel="noopener">
                 <span class="work-thumb"><img src="./assets/images/works/set-car-6.webp" width="800" height="800" alt="はたらく車の刺繍を入れた紺色の入園入学6点セット" loading="lazy" decoding="async"></span>
                 <span class="work-body">
@@ -498,17 +548,17 @@
 
         <ol class="flow-list">
           <li class="flow-step" data-reveal>
-            <span class="flow-num">1</span>
+            <span class="flow-num">01</span>
             <h3>作品を選ぶ</h3>
             <p>Creemaの販売ページから、気になる作品を選びます。サイズや生地の詳細は各ページに記載しています。</p>
           </li>
           <li class="flow-step" data-reveal>
-            <span class="flow-num">2</span>
+            <span class="flow-num">02</span>
             <h3>刺繍のご希望を伝える</h3>
             <p>お名前の綴りと書体、ワンポイント刺繍の種類を、ご注文時の備考欄にご記入ください。</p>
           </li>
           <li class="flow-step" data-reveal>
-            <span class="flow-num">3</span>
+            <span class="flow-num">03</span>
             <h3>お作りして発送</h3>
             <p>ご注文を確認してから一点ずつお作りします。発送予定日は作品ページに記載しています。</p>
           </li>

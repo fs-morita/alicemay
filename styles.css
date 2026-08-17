@@ -405,13 +405,14 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round
 }
 .hero-facts > div:last-child { padding-right: 0; margin-right: 0; }
 
-/* 区切りの縦線は、3項目が1行に収まるときだけ引く。折り返した行の先頭にも
+/* 区切りの縦線は、項目が1行に収まるときだけ引く。折り返した行の先頭にも
    線が付くと、何も区切っていない線が宙に浮いて見えるため。
    判定は画面幅ではなくコピー段の実幅で行う（.hero-copy が container）。
    画面幅で切ると、2段組に変わる 960〜1280px あたりで段だけが狭くなり、
-   「線は出ているのに折り返している」状態になる。3項目の実測は約424pxなので
-   440px を境にしている。 */
-@container (min-width: 440px) {
+   「線は出ているのに折り返している」状態になる。
+   いまの2項目の実測は約190px。項目を増やすときは、この値を
+   増えたあとの実測幅に合わせて上げること。 */
+@container (min-width: 240px) {
   .hero-facts { --fact-gap: 28px; }
   .hero-facts > div + div::before {
     content: ""; position: absolute; left: calc(var(--fact-gap) * -1); top: 4px; bottom: 4px; width: 1px;
